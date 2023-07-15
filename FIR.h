@@ -1,6 +1,11 @@
 #ifndef FIR_H
 #define FIR_H
 
+#include <math.h>
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+
 #define SIZE 2
 
 const float a=0.8;
