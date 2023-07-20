@@ -3,7 +3,9 @@
 #include "FIR.h"
 
 #define freq_pin 33
+const float a=0.7,b=0.7;
 
+FIR filter;
 Ticker ticker5Hz;
 bool flag=false;
 bool blink=false;
@@ -50,7 +52,7 @@ void loop()
     Serial.printf("Dado Bruto");
     Serial.println(rpm_hz);
     Serial.printf("Dado filtrado");
-    Serial.println(FIR(rpm_hz));
+    Serial.println(filter.filt(a,b,rpm_hz));
 
     pulse_counter = 0;
     current_period = 0;                                   // reset pulses related variables
