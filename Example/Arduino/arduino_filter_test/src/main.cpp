@@ -1,11 +1,16 @@
+/* The same logic can be implemented in mbed Keil Studio. */
 #include <Arduino.h>
 #include <Ticker.h>
 #include "FIR.h"
 
 #define freq_pin 33
-const float a=0.7,b=0.7;
 
+/* Variables for filtering */
+const float a=0.7,b=0.7; 
 FIR filter;
+FIR double_filter;
+
+/* Global variables and ESP32/STM32 Tools */
 Ticker ticker5Hz;
 bool flag=false;
 bool blink=false;
@@ -13,6 +18,7 @@ uint8_t pulse_counter = 0;
 uint64_t current_period = 0, last_count = 0;
 float rpm_hz, rpm_ilogger=0;
 
+/* General and Interrupts functions */
 void ticker5HzISR();
 void frequencyCounterISR();
 
@@ -41,18 +47,20 @@ void loop()
 
     if (current_period!=0)
     {
-      rpm_hz = ((float)pulse_counter/(current_period/1000000.0));    //calculates frequency in Hz
+      //rpm_hz = ((float)pulse_counter/(current_period/1000000.0));    //calculates frequency in Hz
 
       rpm_ilogger = pulse_counter*5*60;
     } else {
-      rpm_hz = 0;
+      //rpm_hz = 0;
       rpm_ilogger = 0;
     }
 
-    Serial.printf("Dado Bruto");
-    Serial.println(rpm_hz);
-    Serial.printf("Dado filtrado");
-    Serial.println(filter.filt(a,b,rpm_hz));
+    Serial.printf("Dado Bruto: ");
+    Serial.println(rpm_ilogger);
+    Serial.printf("Dado filtrado: ");
+    Serial.println((uint16_t)filter.filt(a,b,rpm_ilogger));
+    Serial.printf("Dado filtrado novamente: ");
+    Serial.println((uint16_t)double_filter.filt(a,b,filter.filt(a,b,rpm_ilogger)));
 
     pulse_counter = 0;
     current_period = 0;                                   // reset pulses related variables
