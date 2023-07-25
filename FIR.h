@@ -22,10 +22,10 @@ class FIR {
     ========================================================================================================*/
         float filt(float a, float b, float x, int order);
     private:
-        /*=========================
-            * Update the vetor
-            * Second filter
-        =========================*/
+    /*=========================
+        * Update the vetor
+        * Second filter
+    =========================*/
         void move_vec(float *vetorAddr, int size, float value); 
         float filtfilt(float A, float B, float x2);
         float double_y;
@@ -35,7 +35,7 @@ class FIR {
 
 float FIR::filt(float a, float b, float x, int order)
 {
-    order==2 ? flag=true : flag=false;
+    order==2 ? flag=true : 0;
     static float y_pass[SIZE] = {0,0}, x_pass[SIZE] = {0,0};
 
     float y = (a+b)*y_pass[0] - a*b*y_pass[1] + (1-a-b + a*b)*x_pass[1];
@@ -43,7 +43,7 @@ float FIR::filt(float a, float b, float x, int order)
     move_vec(y_pass, SIZE, y);
     move_vec(x_pass, SIZE, x);
 
-    (flag) ?  double_y = filtfilt(a,b,y) : double_y = y; 
+    (flag) ? double_y = filtfilt(a,b,y) : double_y = y; 
 
     return double_y;
 };
