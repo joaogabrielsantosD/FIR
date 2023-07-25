@@ -1,3 +1,4 @@
+/* Implemented in 2023 by João Gabriel, electronics coordinator of Mangue Baja 2023/24 */
 #ifndef FIR_H
 #define FIR_H
 
@@ -11,15 +12,16 @@
 
 class FIR {
     public:
-    /*
+    /*=======================================================================================================
         * "a" and "b" are the filter coefficients
-        * Works as a linear combination between the values
-    */
+        * The higher the value of the coefficient, the slower its update rate, but the stronger its filter.
+        * Filter based on convolution between previous inputs.
+    ========================================================================================================*/
         float filt(float a, float b, float x);
     private:
-        /*
+        /*=========================
             * Update the vetor
-        */
+        =========================*/
         void move_vec(float *vetorAddr, int size, float value); 
 };
 
