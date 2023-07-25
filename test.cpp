@@ -11,19 +11,10 @@ FIR bs;
 float r = 2500;
 
 int main () 
-{
-    int s = bs.order(2);
-    if (s)
-    {
-        printf("ok");
-    } else {
-        return -1;
-    }
-    
+{   
     while (1)
     {
-        float test = bs.filt(a,b,r);
+        float test = bs.filt(a,b,r,2);
         printf("%d\n", (int)test);
-
     }
 }

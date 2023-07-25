@@ -20,8 +20,7 @@ class FIR {
         * Filter based on convolution between previous inputs.
         * Can suport only for order equal 2
     ========================================================================================================*/
-        bool order(int ord);
-        float filt(float a, float b, float x);
+        float filt(float a, float b, float x, int order);
     private:
         /*=========================
             * Update the vetor
@@ -33,27 +32,10 @@ class FIR {
         bool flag=false;
 };
 
-bool FIR::order(int ord)
+
+float FIR::filt(float a, float b, float x, int order)
 {
-    if (ord==1)
-    {
-        return true;
-    } 
-
-    else if (ord==2)
-    {
-        flag=true;
-        return true;
-    }
-
-    else if (ord>2 || ord<1)
-    {
-        return false;
-    }
-}
-
-float FIR::filt(float a, float b, float x)
-{
+    order==2 ? flag=true : flag=false;
     static float y_pass[SIZE] = {0,0}, x_pass[SIZE] = {0,0};
 
     float y = (a+b)*y_pass[0] - a*b*y_pass[1] + (1-a-b + a*b)*x_pass[1];
