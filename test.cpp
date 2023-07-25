@@ -3,13 +3,11 @@
 
 using namespace std;
 
-FIR as;
 FIR bs;
 
-#define aa 0.6
-#define bb 0.65
-//const float a=0.7,b=0.7;
-//float Hz=1000;
+#define a 0.6
+#define b 0.65
+
 float r = 2500;
 
 int main () 
@@ -24,9 +22,8 @@ int main ()
     
     while (1)
     {
-    
-    float test = bs.filt(aa,bb,r);
-    printf("%d\n", (int)test);
+        float test = bs.filt(a,b,r);
+        printf("%d\n", (int)test);
 
     }
 }

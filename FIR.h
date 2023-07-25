@@ -50,7 +50,6 @@ bool FIR::order(int ord)
     {
         return false;
     }
-    
 }
 
 float FIR::filt(float a, float b, float x)

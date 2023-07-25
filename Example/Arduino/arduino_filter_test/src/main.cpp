@@ -5,10 +5,13 @@
 
 #define freq_pin 33
 
+//#define filter
+#define double_filter
+
 /* Variables for filtering */
-const float a=0.7,b=0.7; 
-FIR filter;
-FIR double_filter;
+#define a 0.6
+#define b 0.65 
+FIR filtering;
 
 /* Global variables and ESP32/STM32 Tools */
 Ticker ticker5Hz;
@@ -32,7 +35,19 @@ void setup()
   }
 
   pinMode(LED_BUILTIN, OUTPUT);
-  
+
+  #ifdef filter
+    byte ordem = 1;
+  #endif
+
+  #ifdef double_filter
+    int ordem = 2;
+  #endif    
+
+  bool s = filtering.order(ordem);
+
+  s ? Serial.println("ok") : s &= ~(s); //clear the flag
+ 
   ticker5Hz.attach(1/5, ticker5HzISR);
   attachInterrupt(digitalPinToInterrupt(freq_pin), frequencyCounterISR, FALLING);
 }
@@ -53,14 +68,20 @@ void loop()
     } else {
       //rpm_hz = 0;
       rpm_ilogger = 0;
-    }
+    }    
 
     Serial.printf("Dado Bruto: ");
     Serial.println(rpm_ilogger);
-    Serial.printf("Dado filtrado: ");
-    Serial.println((uint16_t)filter.filt(a,b,rpm_ilogger));
-    Serial.printf("Dado filtrado novamente: ");
-    Serial.println((uint16_t)double_filter.filt(a,b,filter.filt(a,b,rpm_ilogger)));
+
+    #ifdef filter
+      Serial.printf("Dado filtrado: ");
+      Serial.println(filtering.filt(a, b, rpm_ilogger));
+    #endif
+
+    #ifdef double_filter
+      Serial.printf("Dado filtrado 2 vezes: ");
+      Serial.println(filtering.filt(a, b, rpm_ilogger));
+    #endif
 
     pulse_counter = 0;
     current_period = 0;                                   // reset pulses related variables
