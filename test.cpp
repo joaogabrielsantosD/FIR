@@ -5,9 +5,10 @@ using namespace std;
 
 FIR bs;
 
-#define a 0.6
-#define b 0.65
+#define a 0.2
+#define b 0.25
 
+int nin = 0;
 float r = 2500;
 
 int main () 
@@ -16,5 +17,11 @@ int main ()
     {
         float test = bs.filt(a,b,r);
         printf("%d\n", (int)test);
+        nin++; 
+
+        if (nin==100)
+        {
+            break;
+        }
     }
 }
