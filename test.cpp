@@ -14,7 +14,7 @@ int main ()
 {   
     while (1)
     {
-        float test = bs.filt(a,b,r,2);
+        float test = bs.filt(a,b,r);
         printf("%d\n", (int)test);
     }
 }
