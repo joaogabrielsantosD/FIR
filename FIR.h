@@ -75,63 +75,7 @@ float FIR::filtfilt(float A, float B, float x2)
     move_vec(x2_pass, SIZE, x2);
 
     return y2;
-}
-
-/*
-#ifndef FIR_H
-#define FIR_H
-
-#include <math.h>
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
-
-//You can change the size of the vetor if you needed
-#define SIZE 2
-
-const float a = 0.5; 
-const float b = 0.55;
-
-float FIR(float x);
-float FIR2(float xx);
-void desloca_vetor(float *vetorAddr, int tam, float valor);
-
-float FIR(float x)
-{
-    static float y_pass[SIZE] = {0,0}, x_pass[SIZE] = {0,0};
-    float y = (a+b)*y_pass[0] - a*b*y_pass[1] + (1-a-b + a*b)*x_pass[1];
-    desloca_vetor(y_pass, SIZE, y);
-    desloca_vetor(x_pass, SIZE, x);
-    return y;
-}
-
-void desloca_vetor(float *vetorAddr, int tam, float valor)
-{
-    for (int k=tam-1; k>0; k--)
-    {
-        *(vetorAddr+k) = *(vetorAddr+k-1);
-    }
-
-    *vetorAddr = valor;
 };
 
-float FIR2(float xx)
-{
-    static float yy_pass[SIZE] = {0,0}, xx_pass[SIZE] = {0,0};
-    float yy = (a+b)*yy_pass[0] - a*b*yy_pass[1] + (1-a-b + a*b)*xx_pass[1];
-    desloca_vetor(yy_pass, SIZE, yy);
-    desloca_vetor(xx_pass, SIZE, xx);
-    return yy;
-};
 
-float FIR3(float xxx)
-{
-    static float yyy_pass[SIZE] = {0,0}, xxx_pass[SIZE] = {0,0};
-    float yyy = (a+b)*yyy_pass[0] - a*b*yyy_pass[1] + (1-a-b + a*b)*xxx_pass[1];
-    desloca_vetor(yyy_pass, SIZE, yyy);
-    desloca_vetor(xxx_pass, SIZE, xxx);
-    return yyy;
-};
-#endif
-*/
 #endif
