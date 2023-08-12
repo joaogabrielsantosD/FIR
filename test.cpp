@@ -5,9 +5,6 @@ using namespace std;
 
 FIR bs;
 
-#define a 0.2
-#define b 0.25
-
 int nin = 0;
 float r = 2500;
 
@@ -15,7 +12,7 @@ int main ()
 {   
     while (1)
     {
-        float test = bs.filt(a,b,r);
+        float test = bs.filt(r);
         printf("%d\n", (int)test);
         nin++; 
 
@@ -24,4 +21,5 @@ int main ()
             break;
         }
     }
+    return 0;
 }
