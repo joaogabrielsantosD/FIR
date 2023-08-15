@@ -4,9 +4,6 @@
 
 #include <stdio.h>
 
-/* If you needed apply the filter two times */
-//#define double_filter // uncomment if you wanna apply the filter two times
-
 /*You can change the size of the vetor if you needed*/
 #define SIZE 2
 
@@ -23,7 +20,7 @@ class FIR  {
         * Filter based on convolution between previous inputs.
         * Can suport only for order equal 2
     ==========================================================================================================*/
-        float filt(float x);
+        float filt(float x, bool type_filtering);
     private:
     /*=========================
         * Update the vetor
@@ -36,11 +33,9 @@ class FIR  {
 };
 
 
-float FIR::filt(float x)
+float FIR::filt(float x, bool type_filtering)
 {
-    #ifdef double_filter
-        flag = true;
-    #endif
+    if (type_filtering) this->flag=type_filtering;
 
     static float y_pass[SIZE] = {0,0}, x_pass[SIZE] = {0,0};
 
@@ -49,9 +44,7 @@ float FIR::filt(float x)
     move_vec(y_pass, SIZE, y);
     move_vec(x_pass, SIZE, x);
 
-    (flag) ? double_y = filtfilt(y) : double_y = y; 
-
-    return double_y;
+    return (flag) ? filtfilt(y) : y; 
 };
 
 void FIR::move_vec(float *vetorAddr, int size, float value)
