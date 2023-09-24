@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <iostream>
 #include "FIR.h"
 
 using namespace std;
@@ -10,16 +11,15 @@ float r = 2500;
 
 int main () 
 {   
-    while (1)
-    {
-        float test = bs.filt(r);
-        printf("%d\n", (int)test);
-        nin++; 
 
-        if (nin==100)
-        {
-            break;
-        }
-    }
+   while (1)
+   {
+        int w = (int)bs.filt(r,0.6,0.6);
+        cout << w << endl;
+        nin++;
+        if(nin==10000)
+          break;
+   }
+   
     return 0;
 }
