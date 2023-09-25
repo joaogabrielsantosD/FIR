@@ -1,4 +1,5 @@
 /* The same logic can be implemented in mbed Keil Studio. */
+/* This example is for RPM data */
 #include <Arduino.h>
 #include <Ticker.h>
 #include "FIR.h"
@@ -9,17 +10,18 @@
 #define double_filter
 
 /* Variables for filtering */
-#define a 0.6
-#define b 0.65 
+const float a = 0.6;
+const float b = 0.65; 
 FIR filtering;
 
 /* Global variables and ESP32/STM32 Tools */
 Ticker ticker5Hz;
+bool dd=false;
 bool flag=false;
 bool blink=false;
 uint8_t pulse_counter = 0;
 uint64_t current_period = 0, last_count = 0;
-float rpm_hz, rpm_ilogger=0;
+float rpm_hz, rpm_logger=0;
 
 /* General and Interrupts functions */
 void ticker5HzISR();
@@ -36,25 +38,17 @@ void setup()
 
   pinMode(LED_BUILTIN, OUTPUT);
 
-  #ifdef filter
-    byte ordem = 1;
-  #endif
-
   #ifdef double_filter
-    int ordem = 2;
-  #endif    
+    dd |= 0x01;
+  #endif  
 
-  bool s = filtering.order(ordem);
-
-  s ? Serial.println("ok") : s &= ~(s); //clear the flag
- 
-  ticker5Hz.attach(1/5, ticker5HzISR);
+  ticker5Hz.attach(1.0/5, ticker5HzISR);
   attachInterrupt(digitalPinToInterrupt(freq_pin), frequencyCounterISR, FALLING);
 }
 
 void loop() 
 {
-  if (flag)
+  if(flag)
   {
     Serial.println("f");
 
@@ -64,23 +58,21 @@ void loop()
     {
       //rpm_hz = ((float)pulse_counter/(current_period/1000000.0));    //calculates frequency in Hz
 
-      rpm_ilogger = pulse_counter*5*60;
+      rpm_logger = pulse_counter*5*60;
     } else {
       //rpm_hz = 0;
-      rpm_ilogger = 0;
+      rpm_logger = 0;
     }    
 
     Serial.printf("Dado Bruto: ");
-    Serial.println(rpm_ilogger);
-
-    #ifdef filter
-      Serial.printf("Dado filtrado: ");
-      Serial.println(filtering.filt(a, b, rpm_ilogger));
-    #endif
+    Serial.println(rpm_logger);
 
     #ifdef double_filter
       Serial.printf("Dado filtrado 2 vezes: ");
-      Serial.println(filtering.filt(a, b, rpm_ilogger));
+      Serial.println(filtering.filt(a, b, rpm_logger, dd));
+    #else
+      Serial.printf("Dado filtrado: ");
+      Serial.println(filtering.filt(rpm_logger, a, b));
     #endif
 
     pulse_counter = 0;
