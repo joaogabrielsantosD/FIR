@@ -4,7 +4,7 @@
 
 #include <stdio.h>
 
-/*You can change the size of the vetor if you needed*/
+/* You can change the size of the vetor if you needed */
 #define SIZE 2
 
 /* Here you can change the filter coefficient manually */
@@ -15,32 +15,32 @@
 class FIR  {
     public:
     /*========================================================================================================
-        * "a" and "b" are the filter coefficients
-        * The higher the value of the coefficient, the slower its update rate, but the stronger its filter.
         * Filter based on convolution between previous inputs.
         * Can suport only for order equal 2
+        * @param x is the variable used for the filtering
+        * @param a_coef, b_coef is the coefficients to the filter;
+        *   The higher the value of the coefficient, the slower its update rate, but the stronger its filter.
+        * @param type_filtering if needeed apply your filter two times type_filtering=true   
     ==========================================================================================================*/
         float filt(float x, float a_coef, float b_coef, bool type_filtering=false);
 
     private:
     /*=========================
         * Update the vetor
-        * Second filter
     ==========================*/
         void move_vec(float *vetorAddr, int size, float value); 
+        /* Second filter */
         float filtfilt(float x2, float a_coef, float b_coef); // Second filter if you defined
         float double_y;
         bool flag=false;
     
     protected:
-        float a_coef,b_coef;
+        float a_coef, b_coef;
 };
 
-float FIR::filt(float x,float a_coef, float b_coef, bool type_filtering)
+float FIR::filt(float x, float a_coef, float b_coef, bool type_filtering)
 {
-    /*
-       * @param flag is the flag to determinate your filter is apply two times  
-    */
+    /* @var flag is the flag to determinate if your filter is apply two times */
     if (type_filtering) this->flag=type_filtering;
 
     static float y_pass[SIZE] = {0,0}, x_pass[SIZE] = {0,0};
